@@ -41,7 +41,7 @@ You can send an email using a saved template like this:
 
 ```php[
 Endpoint URL:  wp-json/etm/v1/send
-e.g. http://localhost/wp671/wp-json/etm/v1/send
+e.g. https://your-domain/wp-json/etm/v1/send
 
 Method: POST
 Raw Json payload:
