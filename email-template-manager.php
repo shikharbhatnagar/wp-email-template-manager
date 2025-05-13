@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Email Template Manager
-Description: Create and manage different HTML email templates with TinyMCE, live preview, export/import, and integration with wp_mail.
+Description: Create and manage different HTML email templates with TinyMCE, live preview.
 Version: 1.1
 Author: Shikhar Bhatnagar
 */
