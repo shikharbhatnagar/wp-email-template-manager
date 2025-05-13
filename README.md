@@ -47,6 +47,6 @@ Method: POST
 Raw Json payload:
 {
     "to": "bhatnagar.shikhar@gmail.com",
-    "subject": "This i ssubject line",
+    "subject": "This is subject line",
     "template": "Hello there, welcome aboard"
 }
