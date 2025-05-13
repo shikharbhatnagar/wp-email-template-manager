@@ -45,3 +45,6 @@ add_action('wp_ajax_etm_preview_template', function() {
     echo wp_kses_post($_POST['body']);
     wp_die();
 });
+
+
+define('ETM_API_KEY', 'shikharbhatnagar'); 

@@ -7,6 +7,10 @@ add_action('admin_menu', function() {
 
     // Edit page does not need to be listed in the menu
     add_submenu_page(null, 'Edit Template', 'Edit Template', 'manage_options', 'email-template-edit', 'etm_render_edit_page');
+
+    add_submenu_page('email-templates', 'SMTP Settings', 'SMTP Settings', 'manage_options', 'etm-smtp-settings', 'etm_render_smtp_settings_page');
+    // add_options_page('SMTP Settings', 'SMTP Settings', 'manage_options', 'etm-smtp-settings', 'etm_render_smtp_settings_page');
+
 });
 
 function etm_render_list_page() {
@@ -106,7 +110,7 @@ function etm_render_edit_page() {
     ?>
     <div class="wrap">
         <h1>Email Templates <a href="?page=email-template-add" class="page-title-action">Add New</a></h1>
-        
+
         <h1>Edit Email Template</h1>
         <form method="post">
             <p><input type="text" name="name" required value="<?php echo esc_attr($template->name); ?>" class="regular-text" /></p>
@@ -118,6 +122,61 @@ function etm_render_edit_page() {
     </div>
     <?php
 }
+
+function etm_render_smtp_settings_page() {
+    ?>
+    <div class="wrap">
+        <h1>SMTP Settings</h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('etm_smtp_settings');
+            do_settings_sections('etm-smtp-settings');
+            submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+add_action('admin_init', function () {
+    register_setting('etm_smtp_settings', 'etm_smtp');
+
+    add_settings_section('etm_smtp_main', 'SMTP Configuration', null, 'etm-smtp-settings');
+
+    $fields = [
+        'host' => 'SMTP Host',
+        'port' => 'SMTP Port',
+        'username' => 'SMTP Username',
+        'password' => 'SMTP Password',
+        'from_email' => 'From Email',
+        'from_name' => 'From Name',
+        'encryption' => 'Encryption (tls or ssl)',
+    ];
+
+    foreach ($fields as $key => $label) {
+        add_settings_field($key, $label, function () use ($key) {
+            $options = get_option('etm_smtp');
+            echo '<input type="text" name="etm_smtp[' . $key . ']" value="' . esc_attr($options[$key] ?? '') . '" class="regular-text">';
+        }, 'etm-smtp-settings', 'etm_smtp_main');
+    }
+});
+
+
+add_action('phpmailer_init', function ($phpmailer) {
+    $smtp = get_option('etm_smtp');
+
+    if (!$smtp || empty($smtp['host'])) return;
+
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = $smtp['host'];
+    $phpmailer->SMTPAuth   = true;
+    $phpmailer->Port       = $smtp['port'];
+    $phpmailer->Username   = $smtp['username'];
+    $phpmailer->Password   = $smtp['password'];
+    $phpmailer->SMTPSecure = $smtp['encryption'];
+    $phpmailer->From       = $smtp['from_email'];
+    $phpmailer->FromName   = $smtp['from_name'];
+});
 
 
 ////////////////////////////////////////////////////
