@@ -39,12 +39,14 @@ These will be replaced dynamically when sending actual emails.
 
 You can send an email using a saved template like this:
 
-```php
-$template = etm_get_email_template($template_id);
-$replaced_body = etm_replace_placeholders($template->body, [
-    'name' => 'John Doe',
-    'email' => 'john@example.com',
-    'date' => date('Y-m-d'),
-]);
+```php[
+Endpoint URL:  wp-json/etm/v1/send
+e.g. http://localhost/wp671/wp-json/etm/v1/send
 
-wp_mail('john@example.com', $template->subject, $replaced_body, ['Content-Type: text/html']);
+Method: POST
+Raw Json payload:
+{
+    "to": "bhatnagar.shikhar@gmail.com",
+    "subject": "This i ssubject line",
+    "template": "Hello there, welcome aboard"
+}
