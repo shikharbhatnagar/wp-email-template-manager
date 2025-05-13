@@ -37,13 +37,16 @@ These will be replaced dynamically when sending actual emails.
 
 ## 🧪 Sending Emails via Code
 
+Define APIKEY in plugin function.php: 
+define('ETM_API_KEY', 'YOUR API KEY');
+
 You can send an email using a saved template like this:
 
 ```php[
 Endpoint URL:  wp-json/etm/v1/send
 e.g. https://your-domain/wp-json/etm/v1/send
-
 Method: POST
+Authorization: Bearer YOUR API KEY
 Raw Json payload:
 {
     "to": "bhatnagar.shikhar@gmail.com",
